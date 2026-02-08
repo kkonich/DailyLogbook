@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import THEME from './constants/theme'
 import './App.css'
 
@@ -7,6 +8,14 @@ function App() {
     const saved = localStorage.getItem('theme')
     return saved === THEME.DARK
   })
+  const { t, i18n } = useTranslation()
+
+  useEffect(() => {
+    const saved = localStorage.getItem('language')
+    if (saved) {
+      i18n.changeLanguage(saved)
+    }
+  }, [i18n])
 
   useEffect(() => {
     localStorage.setItem('theme', isDark ? THEME.DARK : THEME.LIGHT)
@@ -16,18 +25,34 @@ function App() {
     <div className={`app ${isDark ? 'theme-dark' : 'theme-light'}`}>
       <header className="topbar">
         <title>Daily Logbook</title>
-        <div className="brand">DailyLogbook</div>
+        <div className="brand">{t('brand')}</div>
         <nav className="nav">
-          <span className="nav-item active">Calendar</span>
-          <span className="nav-item">My Entries</span>
+          <span className="nav-item active">{t('navCalendar')}</span>
+          <span className="nav-item">{t('navEntries')}</span>
         </nav>
         <div className="menu-actions">
+          <label className="language">
+            <span className="sr-only">{t('languageLabel')}</span>
+            <select
+              className="language-select"
+              value={i18n.language}
+              onChange={(event) => {
+                const next = event.target.value
+                i18n.changeLanguage(next)
+                localStorage.setItem('language', next)
+              }}
+              aria-label={t('languageLabel')}
+            >
+              <option value="en">English</option>
+              <option value="de">Deutsch</option>
+            </select>
+          </label>
           <button
             className={`theme-toggle ${isDark ? 'on' : 'off'}`}
             type="button"
             onClick={() => setIsDark((value) => !value)}
-            aria-label="Toggle theme"
-            title={isDark ? 'Light Mode' : 'Dark Mode'}
+            aria-label={t('toggleTheme')}
+            title={isDark ? t('lightMode') : t('darkMode')}
           >
             <span className="toggle-track" aria-hidden="true">
               <span className="toggle-thumb">
@@ -48,11 +73,11 @@ function App() {
           <h1>April 1, 2026</h1>
           <div className="divider" />
           <div className="mood">
-            <span className="label">Mood:</span>
-            <span className="value">Good day</span>
+            <span className="label">{t('moodLabel')}</span>
+            <span className="value">{t('moodValue')}</span>
           </div>
           <div className="divider" />
-          <p>This is just a test.</p>
+          <p>{t('entryText')}</p>
         </section>
       </main>
 
@@ -60,10 +85,10 @@ function App() {
         <div className="footer-left"></div>
         <div className="footer-actions">
           <button className="btn primary" type="button">
-            Edit Entry
+            {t('editEntry')}
           </button>
           <button className="btn" type="button">
-            Back to calendar
+            {t('backToCalendar')}
           </button>
         </div>
       </footer>
