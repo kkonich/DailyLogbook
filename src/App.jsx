@@ -1,12 +1,21 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
+import THEME from './constants/theme'
 import './App.css'
 
 function App() {
-  const [isDark, setIsDark] = useState(false)
+  const [isDark, setIsDark] = useState(() => {
+    const saved = localStorage.getItem('theme')
+    return saved === THEME.DARK
+  })
+
+  useEffect(() => {
+    localStorage.setItem('theme', isDark ? THEME.DARK : THEME.LIGHT)
+  }, [isDark])
 
   return (
     <div className={`app ${isDark ? 'theme-dark' : 'theme-light'}`}>
       <header className="topbar">
+        <title>Daily Logbook</title>
         <div className="brand">DailyLogbook</div>
         <nav className="nav">
           <span className="nav-item active">Calendar</span>
