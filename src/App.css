@@ -1,3 +1,5 @@
+/* App.css */
+
 .app {
   min-height: 100vh;
   display: grid;
@@ -7,6 +9,7 @@
   background: var(--paper);
 }
 
+/* ---------- Theme tokens ---------- */
 .theme-light {
   --paper: #f6ebe2;
   --paper-2: #f4dfcf;
@@ -39,7 +42,9 @@
   --divider: rgba(215, 162, 111, 0.25);
 }
 
-.topbar {
+/* ---------- Topbar ---------- */
+.topbar,
+.footer {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -49,13 +54,24 @@
   background: var(--peach-2);
   box-shadow: var(--shadow-soft);
   position: sticky;
-  top: 0;
   z-index: 10;
 }
 
+.topbar {
+  top: 0;
+  overflow: hidden;
+}
+
+.footer {
+  bottom: 0;
+  min-height: 80px;
+  padding: 26px clamp(20px, 6vw, 72px);
+}
+
+
 .brand {
   font-family: var(--font-display);
-  font-size: 22px;
+  font-size: 26px;
   letter-spacing: 0.2px;
   color: var(--copper);
   font-weight: 700;
@@ -73,6 +89,8 @@
 .nav-item {
   padding-bottom: 4px;
   border-bottom: 2px solid transparent;
+  text-decoration: none;
+  color: inherit;
 }
 
 .nav-item.active {
@@ -85,7 +103,14 @@
   align-items: center;
   gap: 12px;
 }
+ 
+.app:not(.has-name) .nav,
+.app:not(.has-name) .burger {
+  pointer-events: none;
+  opacity: 0.55;
+}
 
+/* ---------- Controls ---------- */
 .language {
   display: inline-flex;
   align-items: center;
@@ -123,7 +148,7 @@
 }
 
 .toggle-track {
-  width: 52px;
+  width: 64px;
   height: 28px;
   border-radius: 999px;
   background: var(--peach-3);
@@ -135,20 +160,20 @@
 }
 
 .toggle-thumb {
-  width: 22px;
+  width: 34px;
   height: 22px;
   border-radius: 999px;
   background: var(--cream);
   color: var(--ink);
   display: grid;
   place-items: center;
-  font-size: 14px;
+  font-size: 10px;
   transition: transform 220ms ease, background 200ms ease, color 200ms ease;
   box-shadow: var(--shadow-soft);
 }
 
 .theme-toggle.on .toggle-thumb {
-  transform: translateX(24px);
+  transform: translateX(26px);
 }
 
 .theme-toggle.on .toggle-track {
@@ -180,11 +205,18 @@
   border-radius: 999px;
 }
 
+/* ---------- Layout ---------- */
 .content {
   margin: clamp(24px, 4vw, 40px) 0;
   padding: 0 clamp(20px, 6vw, 72px);
   display: grid;
   place-items: center;
+}
+
+#today {
+  width: 100%;
+  display: flex;
+  justify-content: center;
 }
 
 .entry-card {
@@ -202,6 +234,17 @@
   font-family: var(--font-display);
   font-size: clamp(28px, 4.5vw, 46px);
   color: var(--ink);
+  text-align: center;
+}
+
+.entry-date {
+  margin: 0 0 8px;
+  max-width: none;
+  font-size: clamp(16px, 2vw, 20px);
+  width: 100%;
+  text-align: center;
+  color: var(--ink-soft);
+  font-weight: 600;
 }
 
 .divider {
@@ -210,6 +253,79 @@
   margin: 16px 0;
 }
 
+/* ---------- Entry header (question + mood) ---------- */
+.entry-head {
+  margin: 0 0 10px;
+}
+
+.entry-head__top {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  justify-content: center;
+}
+
+
+.mood-picker {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0;
+  flex: 0 0 auto;
+}
+
+.mood-picker.error {
+  padding: 6px 8px;
+  border-radius: 999px;
+  box-shadow: 0 0 0 2px rgba(196, 116, 58, 0.35);
+  background: rgba(196, 116, 58, 0.08);
+  animation: moodPulse 600ms ease-in-out;
+}
+
+.mood-error {
+  margin: 6px 0 12px;
+  text-align: center;
+  color: var(--copper);
+  font-weight: 600;
+  font-size: 14px;
+}
+
+@keyframes moodPulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.03); }
+  100% { transform: scale(1); }
+}
+
+.mood-pill {
+  border: 0;
+  background: var(--cream);
+  color: var(--ink);
+  padding: 6px 12px;
+  border-radius: 999px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  min-width: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  white-space: nowrap;
+}
+
+.mood-pill.active {
+  background: var(--copper);
+  color: #fff7ef;
+}
+
+.mood-emoji {
+  display: inline-block;
+  width: clamp(24px, 4vw, 34px);
+  height: clamp(24px, 4vw, 34px);
+  object-fit: contain;
+}
+
+/* ---------- Entry view (saved entry) ---------- */
 .mood {
   display: flex;
   align-items: center;
@@ -227,38 +343,106 @@
   font-weight: 600;
 }
 
-.entry-card p {
-  margin: 0;
-  font-size: 18px;
+.entry-text {
+  margin-top: 10px;
   color: var(--ink-soft);
-  max-width: 64ch;
+  font-style: italic;
 }
 
-.footer {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 16px;
-  padding: 18px clamp(20px, 6vw, 72px);
-  border-radius: 0;
-  background: var(--peach-2);
-  box-shadow: var(--shadow-soft);
-  position: sticky;
+/* ---------- Footer decoration ---------- */
+.footer-decor {
+  position: absolute;
+  left: clamp(20px, 4vw, 48px);
+  right: clamp(20px, 4vw, 48px);
   bottom: 0;
-  z-index: 10;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  pointer-events: none;
+  opacity: 0.95;
 }
 
-.footer-left {
-  font-family: var(--font-display);
+.footer-decor__cup {
+  width: clamp(90px, 18vw, 150px);
+  height: auto;
+}
+
+.footer-decor__candleplant {
+  width: clamp(90px, 18vw, 150px);
+  height: auto;
+}
+
+/* ---------- Greeting / welcome ---------- */
+.greeting {
+  margin: 0 0 6px;
   color: var(--copper);
-  font-size: 18px;
+  font-weight: 600;
+  font-size: 16px;
+  letter-spacing: 0.2px;
 }
 
-.footer-actions {
+.name-form h1 {
+  margin: 0 0 10px;
+  font-family: var(--font-display);
+  font-size: clamp(32px, 4.5vw, 46px);
+  color: var(--ink);
+}
+
+.name-form p {
+  margin: 0 0 18px;
+  color: var(--ink-soft);
+  font-size: clamp(14px, 1.5vw, 18px);
+  text-align: center;
+}
+
+.name-row {
   display: flex;
   gap: 12px;
+  flex-wrap: wrap;
 }
 
+.name-input {
+  flex: 1;
+  min-width: 180px;
+  height: 40px;
+  border-radius: 10px;
+  border: 1px solid var(--peach-4);
+  background: var(--cream);
+  color: var(--ink);
+  padding: 0 12px;
+  font-size: 16px;
+}
+
+/* ---------- Journal ---------- */
+.journal-label {
+  display: block;
+  margin: 14px 0 8px; 
+  font-weight: 600;
+  font-size: clamp(14px, 1.5vw, 18px);
+  color: var(--ink);
+  text-align: center;
+}
+
+.journal-input {
+  width: 100%;
+  border-radius: 12px;
+  border: 1px solid var(--peach-4);
+  background: var(--cream);
+  color: var(--ink);
+  padding: 10px 12px;
+  font-size: 16px;
+  resize: vertical;
+  margin-bottom: 16px;
+}
+
+.entry-actions {
+  display: flex;
+  gap: 12px;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+}
+
+/* ---------- Buttons ---------- */
 .btn {
   border: 1px solid var(--peach-4);
   background: var(--cream);
@@ -276,6 +460,27 @@
   color: #fff7ef;
 }
 
+/* ---------- Footer ---------- */
+.footer {
+  bottom: 0;
+}
+
+.footer-left {
+  font-family: var(--font-display);
+  color: var(--copper);
+  font-size: 18px;
+}
+
+.footer-actions {
+  display: flex;
+  gap: 12px;
+}
+
+.footer-actions--hidden {
+  display: none;
+}
+
+/* ---------- Responsive ---------- */
 @media (max-width: 720px) {
   .nav {
     gap: 12px;
